@@ -1,0 +1,30 @@
+[package]
+name = "rust-gumki-binary"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+warp = "0.3"         # Lightweight web framework for the Rust server
+pyo3 = { version = "0.18", features = ["extension-module", "auto-initialize"] }
+serde = { version = "1.0", features = ["derive"] }  # For serializing and deserializing JSON
+serde_json = "1.0"   # JSON support for requests/responses
+tokio = { version = "1", features = ["full"] }  # Async runtime for Warp
+
+[build-dependencies]
+pyo3-build-config = "0.18"  # Ensure it matches the version of pyo3 you're using
+
+
+[package.metadata.maturin]
+python-sys = { version = "3.10", features = ["extension-module"] }
+
+[target.x86_64-apple-darwin]
+rustflags = [
+  "-C", "link-arg=-undefined",
+  "-C", "link-arg=dynamic_lookup",
+]
+
+[target.aarch64-apple-darwin]
+rustflags = [
+  "-C", "link-arg=-undefined",
+  "-C", "link-arg=dynamic_lookup",
+]
